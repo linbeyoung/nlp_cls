@@ -35,12 +35,11 @@ def method_1(OUTPUT = False):
     if OUTPUT:
         with open('datasets/train.txt', 'a') as train_set:
             for line in train:
-                train_set.writelines(str(line) + '\n')
+                train_set.writelines(line + '\n')
 
         with open('datasets/test.txt', 'a') as test_set:
             for line in test:
-                test_set.writelines(line)
-                # test_set.close()
+                test_set.writelines(line + '\n')
 
     print("加载完成，测试集比例%s"%(test_ratio))
     print("训练集%s条"%(len(train)))
