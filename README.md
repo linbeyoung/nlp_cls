@@ -3,7 +3,7 @@
 ```python
 from utils.data_loader import load_data
 
-train,test=load_data() # 即可读取数据集，数据集已经过shuffle
+train,test=load_data('./小组作业-语料/') # 输入存放数据集的文件夹即可读取数据集，数据集已经过shuffle
 ```
 
 格式：
