@@ -2,12 +2,11 @@ import glob
 import numpy as np
 from math import floor
 
-raw_data_path="./小组作业-语料/"
 
 test_ratio=0.2 # 测试集比例
 seed=107
 
-def method_1():
+def method_1(raw_data_path):
     """
     划分方法一：所有数据打乱，按比例切割训练、测试集
     默认测试集比例0.2
@@ -36,5 +35,5 @@ def method_1():
     
     return train,test
 
-def load_data():
-    return method_1()
+def load_data(raw_data_path):
+    return method_1(raw_data_path)
