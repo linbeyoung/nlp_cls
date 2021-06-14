@@ -374,45 +374,86 @@ class ColaProcessor(DataProcessor):
     return examples
 
 
-class NLPProcessor(DataProcessor):
-  """Processor for the NLP class report data set (GLUE version)."""
+# class NLPProcessor(DataProcessor):
+#   """Processor for the NLP class report data set (GLUE version)."""
+#
+#   def get_train_examples(self, data_dir):
+#     """See base class."""
+#     return self._create_examples(
+#         self._read_tsv(os.path.join(data_dir, "datasets/bert/train_bert.txt")), "train")
+#
+#   def get_dev_examples(self, data_dir):
+#     """See base class."""
+#     return self._create_examples(
+#         self._read_tsv(os.path.join(data_dir, "datasets/bert/test_bert.txt")), "test")
+#
+#   def get_test_examples(self, data_dir):
+#     """See base class."""
+#     return self._create_examples(
+#         self._read_tsv(os.path.join(data_dir, "datasets/bert/test_bert.txt")), "test")
+#
+#   def get_labels(self):
+#     """See base class."""
+#     return ["1", "2", "3", "5"]
+#
+#   def _create_examples(self, lines, set_type):
+#     """Creates examples for the training and dev sets."""
+#     examples = []
+#     for (i, line) in enumerate(lines):
+#       # Only the test set has a header
+#       if set_type == "test" and i == 0:
+#         continue
+#       guid = "%s-%s" % (set_type, i)
+#       if set_type == "test":
+#         text_a = tokenization.convert_to_unicode(line[1])
+#         label = "0"
+#       else:
+#         text_a = tokenization.convert_to_unicode(line[3])
+#         label = tokenization.convert_to_unicode(line[1])
+#       examples.append(
+#           InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+#     return examples
 
-  def get_train_examples(self, data_dir):
-    """See base class."""
-    return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "datasets/bert/train_bert.txt")), "train")
+class NlpProcessor(DataProcessor):
+    """Processor for the dzg data set """
 
-  def get_dev_examples(self, data_dir):
-    """See base class."""
-    return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "datasets/bert/test_bert.txt")), "test")
+    def get_train_examples(self, data_dir):
+        return self._create_examples(self._read_tsv(os.path.join(data_dir, "train.txt")), "train")
 
-  def get_test_examples(self, data_dir):
-    """See base class."""
-    return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "datasets/bert/test_bert.txt")), "test")
+    def get_dev_examples(self, data_dir):
+        return self._create_examples(self._read_tsv(os.path.join(data_dir, "test.txt")), "dev")
 
-  def get_labels(self):
-    """See base class."""
-    return ["1", "2", "3", "5"]
+    def get_test_examples(self, data_dir):
+        return self._create_examples(self._read_tsv(os.path.join(data_dir, "test.txt")), "test")
 
-  def _create_examples(self, lines, set_type):
-    """Creates examples for the training and dev sets."""
-    examples = []
-    for (i, line) in enumerate(lines):
-      # Only the test set has a header
-      if set_type == "test" and i == 0:
-        continue
-      guid = "%s-%s" % (set_type, i)
-      if set_type == "test":
-        text_a = tokenization.convert_to_unicode(line[1])
-        label = "0"
-      else:
-        text_a = tokenization.convert_to_unicode(line[3])
-        label = tokenization.convert_to_unicode(line[1])
-      examples.append(
-          InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
-    return examples
+    def get_labels(self):
+        return ["1", "2", "3", "5"]
+
+    def _read_tsv(self, input_file, quotechar=None):
+        # reads a tab separated value file.
+        with open(input_file, "r", encoding='utf8', errors='ignore') as f:
+            reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
+            lines = []
+            for line in reader:
+                lines.append(line)
+            return lines
+
+    def _create_examples(self, lines, set_type):
+        """Creates examples for the training and dev sets."""
+        examples = []
+        for (i, line) in enumerate(lines):
+            guid = "{}_{}".format("nlp.clf", str(i))
+            text_a = line[0].strip()
+            label = line[1]
+            if not text_a or label is None:
+                print(guid)
+                print(text_a)
+                print(label)
+                continue
+            if label not in self.get_labels():
+                raise ValueError('label {} is wrong'.format(label))
+            examples.append(InputExample(guid=guid, text_a=text_a, label=[label]))
+        return examples
 
 def convert_single_example(ex_index, example, label_list, max_seq_length,
                            tokenizer):
