@@ -137,8 +137,8 @@ def array2np(dataset):
 
 def load_data_mlp():
     train,test=load_data('./小组作业-语料/')
-    train_text=vectorize(train)
-    unify(train_text,30)
+    train_text=vectorize(train) # 分词，向量化
+    unify(train_text,30) # 统一为30个单词的长度
     train_label=get_label(train)
     
     test_text=vectorize(test)
