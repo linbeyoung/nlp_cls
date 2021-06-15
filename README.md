@@ -1,3 +1,11 @@
+| 模型                       | 代码                          |
+| -------------------------- | ----------------------------- |
+| 朴素贝叶斯                 | 朴素贝叶斯.py                 |
+| MLP                        | MLP.ipynb                     |
+| Bert                       | BERT.ipynb                    |
+| XLNet                      | run_classifier.py             |
+| TextRNN, TextCNN, TextRCNN | TextRNN, TextCNN, TextRCNN/*. |
+
 # 数据集读取
 
 用法：
